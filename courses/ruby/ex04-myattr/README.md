@@ -1,5 +1,9 @@
+#My_attr_accesor
+
 The goal of this exercise is to make first steps in ruby metaprogramming and
 understand how `attr_reader`, `attr_writer` and `attr_accessor` works.
+
+
 
 Do tasks in the next sequence:
 - my_attr_reader_test.rb
