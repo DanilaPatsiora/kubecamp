@@ -1,12 +1,14 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+# frozen_string_literal: true
+
+require "minitest/autorun"
+require "minitest/pride"
 
 class EnumerablesTest < Minitest::Test
   def test_squares_each
     numbers = [1, 2, 3, 4, 5]
     actual = []
     numbers.each do |number|
-      actual << number ** 2
+      actual << number**2
     end
     assert_equal [1, 4, 9, 16, 25], actual
   end
@@ -14,341 +16,338 @@ class EnumerablesTest < Minitest::Test
   def test_squares
     numbers = [1, 2, 3, 4, 5]
     actual = numbers.map do |number|
-      number ** 2
+      number**2
     end
     assert_equal [1, 4, 9, 16, 25], actual
   end
 
   def test_find_waldo_each
-    skip
-    words = ["noise", "dog", "fair", "house", "waldo", "bucket", "fish"]
+    words = %w[noise dog fair house waldo bucket fish]
     actual = nil
     words.each do |word|
-      # Your Code Here
+      actual = word if word == "waldo"
     end
     assert_equal "waldo", actual
   end
 
   def test_find_waldo
-    skip
-    words = ["noise", "dog", "fair", "house", "waldo", "bucket", "fish"]
+    words = %w[noise dog fair house waldo bucket fish]
     actual = words.find do |word|
-      # Your Code Here
+      word == "waldo"
     end
     assert_equal "waldo", actual
   end
 
   def test_pick_words_with_three_letters_each
-    skip
-    words = ["pill", "bad", "finger", "cat", "blue", "dog", "table", "red"]
+    words = %w[pill bad finger cat blue dog table red]
     actual = []
-    # Your Code Here
-    assert_equal ["bad", "cat", "dog", "red"], actual
+    words.each {|i| actual.push(i) if i.length == 3 }
+    assert_equal %w[bad cat dog red], actual
   end
 
   def test_pick_words_with_three_letters
-    skip
-    words = ["pill", "bad", "finger", "cat", "blue", "dog", "table", "red"]
-    actual = # Your Code Here
-    assert_equal ["bad", "cat", "dog", "red"], actual
+    words = %w[pill bad finger cat blue dog table red]
+    actual = words.select {|i| i.length == 3 }
+    assert_equal %w[bad cat dog red], actual
   end
 
   def test_normalize_zip_codes_each
-    skip
-    numbers = [234, 10, 9119, 38881]
+    numbers = [234, 10, 9119, 38_881]
     actual = []
-    # Your Code Here
-    assert_equal ["00234", "00010", "09119", "38881"], actual
+    numbers.each do |x|
+      tmp = ""
+      k = 5 - x.to_s.length
+      k.times do
+        tmp += "0"
+      end
+      tmp += x.to_s
+      actual << tmp
+    end
+    assert_equal %w[00234 00010 09119 38881], actual
   end
 
   def test_normalize_zip_codes
-    skip
-    numbers = [234, 10, 9119, 38881]
-    # Your Code Here
-    assert_equal ["00234", "00010", "09119", "38881"], actual
+    numbers = [234, 10, 9119, 38_881]
+    actual = numbers.map do |x|
+      x = x.to_s
+      x.prepend("0") until x.length == 5
+      x
+    end
+    assert_equal %w[00234 00010 09119 38881], actual
   end
 
   def test_no_waldo_each
-    skip
-    words = ["scarf", "sandcastle", "flag", "pretzel", "crow", "key"]
-    # Your Code Here
+    words = %w[scarf sandcastle flag pretzel crow key]
+    found = nil
+    words.each {|x| found = 1 if x == "waldo" }
     assert_nil found
   end
 
   def test_no_waldo
-    skip
-    words = ["scarf", "sandcastle", "flag", "pretzel", "crow", "key"]
-    # Your Code Here
+    words = %w[scarf sandcastle flag pretzel crow key]
+    act = words.select {|x| x == "waldo" }
+    found = 0 unless act.empty?
     assert_nil found
   end
 
   def test_pick_floats_each
-    skip
     numbers = [3, 1.4, 3.5, 2, 4.9, 9.1, 8.0]
-    # Your Code Here
+    actual = []
+    numbers.each do |x|
+      actual << x if x.is_a? Float
+    end
     assert_equal [1.4, 3.5, 4.9, 9.1, 8.0], actual
   end
 
   def test_pick_floats
-    skip
     numbers = [3, 1.4, 3.5, 2, 4.9, 9.1, 8.0]
-    # Your Code Here
+    actual = numbers.select {|x| x.is_a? Float }
     assert_equal [1.4, 3.5, 4.9, 9.1, 8.0], actual
   end
 
   def test_words_with_no_vowels_each
-    skip
-    words = ["green", "sheep", "travel", "least", "boat"]
-    # Your Code Here
-    assert_equal ["grn", "shp", "trvl", "lst", "bt"], actual
+    words = %w[green sheep travel least boat]
+    actual = []
+    words.each {|x| actual << x.gsub(/[aeiou]/, "") }
+    assert_equal %w[grn shp trvl lst bt], actual
   end
 
   def test_words_with_no_vowels
-    skip
-    words = ["green", "sheep", "travel", "least", "boat"]
-    # Your Code Here
-    assert_equal ["grn", "shp", "trvl", "lst", "bt"], actual
+    words = %w[green sheep travel least boat]
+    actual = words.map {|x| x.gsub(/[aeiou]/, "") }
+    assert_equal %w[grn shp trvl lst bt], actual
   end
 
   def test_has_at_least_one_zero_each
-    skip
     numbers = [2, 0, 9, 3, 0, 1]
-    # Your Code Here
+    actual = false
+    numbers.each {|x| actual = true if x.zero? }
     assert_equal true, actual
   end
 
   def test_has_at_least_one_zero
-    skip
     numbers = [2, 0, 9, 3, 0, 1]
-    # Your Code Here
+    actual = numbers.any?(0)
     assert_equal true, actual
   end
 
   def test_all_gone_each
-    skip
-    words = ["gone", "gone", "gone", "gone", "gone", "gone", "gone"]
-    # Your Code Here
+    words = %w[gone gone gone gone gone gone gone]
+    actual = true
+    words.each {|x| actual = false if x != "gone" }
     assert_equal true, actual
   end
 
   def test_all_gone
-    skip
-    words = ["gone", "gone", "gone", "gone", "gone", "gone", "gone"]
-    # Your Code Here
+    words = %w[gone gone gone gone gone gone gone]
+    actual = words.all?("gone")
     assert_equal true, actual
   end
 
   def test_count_numbers_greater_than_17_each
-    skip
     numbers = [9, 18, 12, 17, 1, 3, 99]
-    # Your Code Here
+    actual = 0
+    numbers.each {|x| actual += 1 if x > 17 }
     assert_equal 2, actual
   end
 
   def test_count_numbers_greater_than_17
-    skip
     numbers = [9, 18, 12, 17, 1, 3, 99]
-    # Your Code Here
+    actual = numbers.count {|x| x > 17 }
     assert_equal 2, actual
   end
 
   def test_array_with_the_most_items_each
-    skip
-    arrays = [[:a, :b, :c], [1, 2, 3, 4, 5], ["zoo", :things, :stuff]]
-
-    # Your Code Here
-
+    arrays = [%i[a b c], [1, 2, 3, 4, 5], ["zoo", :things, :stuff]]
+    actual = []
+    arrays.each {|x| actual = x if x.length > actual.length }
     assert_equal [1, 2, 3, 4, 5], actual
   end
 
   def test_array_with_the_most_items
-    skip
-    arrays = [[:a, :b, :c], [1, 2, 3, 4, 5], ["zoo", :things, :stuff]]
-
-    # Your Code Here
-
+    arrays = [%i[a b c], [1, 2, 3, 4, 5], ["zoo", :things, :stuff]]
+    actual = arrays.max_by(&:length)
     assert_equal [1, 2, 3, 4, 5], actual
   end
 
   def test_group_words_by_first_letter_each
-    skip
-    words = ["ant", "axis", "albatross", "bolt", "badge", "butter", "car", "cdr", "column"]
-    # Your Code Here
-    expected = {"a"=>["ant", "axis", "albatross"], "b"=>["bolt", "badge", "butter"], "c"=>["car", "cdr", "column"]}
+    words = %w[ant axis albatross bolt badge butter car cdr column]
+    actual = {}
+    words.each do |x|
+      index = x[0]
+      actual[index] = [] if actual[index].nil?
+      actual[index] << x
+    end
+    expected = {"a" => %w[ant axis albatross], "b" => %w[bolt badge butter], "c" => %w[car cdr column]}
     assert_equal expected, actual
   end
 
   def test_group_words_by_first_letter
-    skip
-    words = ["ant", "axis", "albatross", "bolt", "badge", "butter", "car", "cdr", "column"]
-    # Your Code Here
-    expected = {"a"=>["ant", "axis", "albatross"], "b"=>["bolt", "badge", "butter"], "c"=>["car", "cdr", "column"]}
+    words = %w[ant axis albatross bolt badge butter car cdr column]
+    actual = words.group_by {|a| a[0] }
+    expected = {"a" => %w[ant axis albatross], "b" => %w[bolt badge butter], "c" => %w[car cdr column]}
     assert_equal expected, actual
   end
 
   def test_none_are_negative_each
-    skip
     numbers = [9, 3, 1, 8, 3, 3, 5]
-    # Your Code Here
+    actual = true
+    numbers.each {|x| actual = false if x.negative? }
     assert true, actual
   end
 
   def test_none_are_negative
-    skip
     numbers = [9, 3, 1, 8, 3, 3, 5]
-    # Your Code Here
+    actual = numbers.all?(&:positive?)
     assert true, actual
   end
 
   def test_sum_a_list_of_numbers_each
-    skip
     numbers = [32, 1, 21, 5, 81, 333]
-    # initial value is 0
-    actual = # Your code here
-      assert_equal 473, actual
+    actual = 0
+    numbers.each {|x| actual += x }
+    assert_equal 473, actual
   end
 
   def test_sum_a_list_of_numbers
-    skip
     numbers = [32, 1, 21, 5, 81, 333]
-    # initial value is 0
-    actual = # Your code here
-      assert_equal 473, actual
+    actual = numbers.sum
+    assert_equal 473, actual
   end
 
   def test_remove_numbers_divisible_by_3_each
-    skip
     numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    # Your Code Here
+    actual = []
+    numbers.each {|x| actual << x if x % 3 != 0 }
     assert_equal [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20], actual
   end
 
   def test_remove_numbers_divisible_by_3
-    skip
     numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    # Your Code Here
+    actual = numbers.filter {|x| x % 3 != 0 }
     assert_equal [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20], actual
   end
 
   def test_speed_interview_pairs_each
-    skip
-    list1 = ["Alice", "Bob", "Charlie"]
-    list2 = ["Xenia", "Yves", "Zach"]
-    # Your Code Here
-    assert_equal [["Alice", "Xenia"], ["Bob", "Yves"], ["Charlie", "Zach"]], actual
+    list1 = %w[Alice Bob Charlie]
+    list2 = %w[Xenia Yves Zach]
+    actual = []
+    list1.each_with_index do |x, i|
+      actual[i] = []
+      actual[i] << x
+      actual[i] << list2[i]
+    end
+    assert_equal [%w[Alice Xenia], %w[Bob Yves], %w[Charlie Zach]], actual
   end
 
   def test_speed_interview_pairs
-    skip
-    list1 = ["Alice", "Bob", "Charlie"]
-    list2 = ["Xenia", "Yves", "Zach"]
-    # Your Code Here
-    assert_equal [["Alice", "Xenia"], ["Bob", "Yves"], ["Charlie", "Zach"]], actual
+    list1 = %w[Alice Bob Charlie]
+    list2 = %w[Xenia Yves Zach]
+    actual = list1.zip(list2)
+    assert_equal [%w[Alice Xenia], %w[Bob Yves], %w[Charlie Zach]], actual
   end
 
   def test_has_a_multi_word_phrase_each
-    skip
     phrases = ["Sure!", "OK.", "I have no idea.", "Really?Whatever."]
-    # Your Code Here
+    actual = false
+    phrases.each {|x| actual = true if x.split(" ").length > 1 }
     assert_equal true, actual
   end
 
   def test_has_a_multi_word_phrase
-    skip
     phrases = ["Sure!", "OK.", "I have no idea.", "Really?Whatever."]
-    # Your Code Here
+    actual = phrases.any? {|x| x.split(" ").length > 1 }
     assert_equal true, actual
   end
 
   def test_count_words_that_are_uppercase_each
-    skip
-    words = ["trousers", "SOCKS", "sweater", "Cap", "SHOE", "TIE"]
-    # Your Code Here
+    words = %w[trousers SOCKS sweater Cap SHOE TIE]
+    actual = 0
+    words.each {|x| actual += 1 if x == x.upcase }
     assert_equal 3, actual
   end
 
   def test_count_words_that_are_uppercase
-    skip
-    words = ["trousers", "SOCKS", "sweater", "Cap", "SHOE", "TIE"]
-    # Your Code Here
+    words = %w[trousers SOCKS sweater Cap SHOE TIE]
+    actual = words.count {|x| x == x.upcase }
     assert_equal 3, actual
   end
 
   def test_smallest_number_each
-    skip
-    numbers = [1, 10, 100, 1000, 10000, 1000000]
-
-    # Your Code Here
-
+    numbers = [1, 10, 100, 1000, 10_000, 1_000_000]
+    actual = 20
+    numbers.each {|x| actual = x if actual > x }
     assert_equal 1, actual
   end
 
   def test_smallest_number
-    skip
-    numbers = [1, 10, 100, 1000, 10000, 1000000]
-
-    # Your Code Here
-
+    numbers = [1, 10, 100, 1000, 10_000, 1_000_000]
+    actual = numbers.min
     assert_equal 1, actual
   end
 
   def test_multiply_list_of_numbers_each
-    skip
     numbers = [2, 3, 5, 7]
-    # initial value is 1
-    actual = # Your code goes here
-      assert_equal 210, actual
+    actual = 1
+    numbers.each {|x| actual *= x }
+    assert_equal 210, actual
   end
 
   def test_multiply_list_of_numbers
-    skip
     numbers = [2, 3, 5, 7]
-    # initial value is 1
-    actual = # Your code goes here
-      assert_equal 210, actual
+    actual = numbers.inject(:*)
+    assert_equal 210, actual
   end
 
   def test_solitaire_each
-    skip
-    list1 = ["Ace", "6", "10", "Queen"]
-    list2 = [:clubs, :diamonds, :hearts, :spades]
-    actual = # Your code goes here
-      assert_equal [["Ace", :clubs], ["6", :diamonds], ["10", :hearts], ["Queen", :spades]], actual
+    list1 = %w[Ace 6 10 Queen]
+    list2 = %i[clubs diamonds hearts spades]
+    actual = []
+    list1.each_with_index do |x, i|
+      actual[i] = []
+      actual[i] << x
+      actual[i] << list2[i]
+    end
+    assert_equal [["Ace", :clubs], ["6", :diamonds], ["10", :hearts], ["Queen", :spades]], actual
   end
 
   def test_solitaire
-    skip
-    list1 = ["Ace", "6", "10", "Queen"]
-    list2 = [:clubs, :diamonds, :hearts, :spades]
-    actual = # Your code goes here
-      assert_equal [["Ace", :clubs], ["6", :diamonds], ["10", :hearts], ["Queen", :spades]], actual
+    list1 = %w[Ace 6 10 Queen]
+    list2 = %i[clubs diamonds hearts spades]
+    actual = list1.zip(list2)
+    assert_equal [["Ace", :clubs], ["6", :diamonds], ["10", :hearts], ["Queen", :spades]], actual
   end
 
   def test_all_multiples_of_7_each
-    skip
     numbers = [42, 14, 35, 49, 28, 56, 21, 7]
-    actual = # Your code goes here
-      assert actual
+    actual = true
+    numbers.each {|x| actual = false if x % 7 != 0 }
+    assert actual
   end
 
   def test_all_multiples_of_7
-    skip
     numbers = [42, 14, 35, 49, 28, 56, 21, 7]
-    actual = # Your code goes here
-      assert actual
+    actual = numbers.all? {|x| (x % 7).zero? }
+    assert actual
   end
 
   def test_sort_by_number_of_cents_each
-    skip
     prices = [3.02, 9.91, 7.9, 10.01, 11.0]
-    actual = # Your code goes here
-      assert_equal [11.0, 10.01, 3.02, 7.9, 9.91], actual
+    lol = {}
+    actual = []
+    prices.each do |x|
+      index = x - x.to_i
+      actual << index
+      lol[index] = x
+    end
+    actual = actual.sort
+    actual = actual.map {|x| lol[x] }
+    assert_equal [11.0, 10.01, 3.02, 7.9, 9.91], actual
   end
 
   def test_sort_by_number_of_cents
-    skip
     prices = [3.02, 9.91, 7.9, 10.01, 11.0]
-    actual = # Your code goes here
-      assert_equal [11.0, 10.01, 3.02, 7.9, 9.91], actual
+    actual = prices.sort_by {|x| x - x.to_i }
+    assert_equal [11.0, 10.01, 3.02, 7.9, 9.91], actual
   end
 end
