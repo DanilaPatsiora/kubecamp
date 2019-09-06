@@ -1,0 +1,4 @@
+--- !ruby/object:MyApp::Config
+var:
+  app_name: some_name
+  app_author: Author
